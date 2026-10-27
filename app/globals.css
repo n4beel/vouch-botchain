@@ -1,160 +1,93 @@
 @import "tailwindcss";
 
-@source "../app/**/*.{ts,tsx}";
-@source "../components/**/*.{ts,tsx}";
-@source "../lib/**/*.{ts,tsx}";
+:root {
+  --bg-base: #0A0F2C;
+  --bg-surface: #121A47;
+  --bg-elevated: #1A2358;
+  --border-default: #2B3680;
+  --border-subtle: #1A2358;
+  --text-primary: #E7ECFF;
+  --text-secondary: #D0D9FC;
+  --text-tertiary: #8C99D1;
+  --text-muted: #A7B2E0;
+  --accent: #FF9ECF;
+  --accent-ink: #2A0A1A;
+  --success: #8BE0B0;
+  --danger: #FFB3C7;
+  --warning: #FFD59A;
+
+  /* Wallet dropdown floating menu tokens (opaque hex literals) */
+  --menu-bg: #141B45;
+  --menu-fg: #E7ECFF;
+  --menu-muted: #B4BEEA;
+  --menu-border: #4A5496;
+  --menu-hover-bg: #212B66;
+  --menu-danger: #FFB3C7;
+
+  /* Cosmic constellation canvas accents */
+  --sky-glow: rgba(255, 158, 207, 0.08);
+  --ring-guide: rgba(74, 84, 150, 0.35);
+}
 
 @theme {
-  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
-
-  --radius: 2px;
-  --radius-sm: 2px;
-  --radius-md: 4px;
+  --font-sans: var(--font-sora), system-ui, sans-serif;
+  --font-mono: var(--font-inconsolata), ui-monospace, monospace;
 }
 
-/**
- * Design tokens.
- *
- * Every component reads these through `var(--token)` rather than a Tailwind colour class, which is
- * what lets a project change its whole palette from `lib/app-config.ts`: the root layout writes
- * `--accent` inline, overriding the default below. Nothing else needs editing per project.
- */
-:root {
-  --bg-base: #0A0A0A;
-  --bg-surface: #111111;
-  --bg-elevated: #181818;
-  --bg-overlay: #1F1F1F;
-  --border-subtle: #1E1E1E;
-  --border-default: #2A2A2A;
-  --border-strong: #383838;
-  --text-primary: #EBEBEB;
-  --text-secondary: #888888;
-  --text-tertiary: #555555;
-  --accent: #00E5CC;
-  --success: #1DB954;
-  --warning: #F5A623;
-  --danger: #E53E3E;
-  /* Wallet menu: opaque, contrast-checked (scripts/check-ui-contract.py). Redefine per project for ITS ground. */
-  --menu-bg: #181818;
-  --menu-fg: #EBEBEB;
-  --menu-muted: #A8A8A8;
-  --menu-border: #3A3A3A;
-  --menu-hover-bg: #262626;
-  --menu-danger: #FF8A8A;
-}
-
-@layer base {
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-  html {
-    height: 100%;
-  }
-
-  body {
-    background: var(--bg-base);
-    color: var(--text-primary);
-    font-family: var(--font-sans);
-    min-height: 100%;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  a {
-    color: inherit;
-  }
-}
-
-/* Touch targets
- *
- * The interface is deliberately dense, and at 26px tall a `size="sm"` button is comfortable with a
- * mouse and a coin-flip with a thumb. `pointer: coarse` matches touch input rather than screen
- * width, so this raises the hit area exactly where it is needed and leaves mouse density
- * untouched, including on a small laptop window.
- *
- * 44px is Apple's minimum; Android asks for 48dp. Padding rather than height, so a control that is
- * already large enough is not stretched.
- */
-@media (pointer: coarse) {
-  button,
-  [role="button"],
-  a.nav-link,
-  select,
-  label[for] {
-    min-height: 44px;
-  }
-
-  input,
-  textarea {
-    /* Anything under 16px makes iOS Safari zoom the page on focus, and it does not zoom back. */
-    font-size: 16px;
-  }
-}
-
-/* Nothing should be able to scroll the page sideways. A single overflowing address or hash
- * otherwise shifts the whole layout and there is no obvious culprit. */
-html,
 body {
-  overflow-x: hidden;
+  margin: 0;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-sora), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-::selection {
-  background: color-mix(in srgb, var(--accent) 18%, transparent);
-  color: var(--accent);
+code, pre, .font-mono {
+  font-family: var(--font-inconsolata), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
-::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
-}
-::-webkit-scrollbar-track {
-  background: var(--bg-base);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--border-strong);
-  border-radius: 2px;
+/* Constellation orbit dash animation */
+@keyframes orbitFlow {
+  from {
+    stroke-dashoffset: 24;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
-.mono {
-  font-family: var(--font-mono);
-  letter-spacing: 0;
-}
-
-/* Toast entry. Radix drives the data-state; without the keyframes the toast simply appears. */
-@keyframes slideIn {
-  from { transform: translateX(8px); opacity: 0; }
-  to   { transform: translateX(0);   opacity: 1; }
-}
-@keyframes swipeOut {
-  to { transform: translateX(100%); opacity: 0; }
-}
-
-@keyframes shimmer {
-  0%   { background-position: -400px 0; }
-  100% { background-position: 400px 0; }
-}
-.skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--bg-surface) 25%,
-    var(--bg-elevated) 50%,
-    var(--bg-surface) 75%
-  );
-  background-size: 800px 100%;
-  animation: shimmer 1.6s ease-in-out infinite;
-  border-radius: 2px;
+.edge-flow {
+  stroke-dasharray: 4 6;
+  animation: orbitFlow 3s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+  .edge-flow {
+    animation: none;
+    stroke-dasharray: none;
+  }
+}
+
+/* Star pulse effect */
+@keyframes starPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.95;
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: 1;
+  }
+}
+
+.center-star-pulse {
+  animation: starPulse 4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .center-star-pulse {
+    animation: none;
   }
 }

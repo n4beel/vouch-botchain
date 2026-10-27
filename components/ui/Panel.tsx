@@ -1,29 +1,55 @@
-import { HTMLAttributes } from "react";
+import { type HTMLAttributes, type ReactNode } from "react";
 
-interface PanelProps extends HTMLAttributes<HTMLDivElement> {
-  elevated?: boolean;
-  noPadding?: boolean;
+export interface ConstellationPanelProps extends HTMLAttributes<HTMLDivElement> {
+  badge?: ReactNode;
+  title?: string;
+  variant?: "surface" | "elevated" | "hollow";
+  compact?: boolean;
 }
 
 export default function Panel({
-  elevated,
-  noPadding,
+  badge,
+  title,
+  variant = "surface",
+  compact = false,
   children,
   className = "",
   style,
-  ...props
-}: PanelProps) {
+  ...rest
+}: ConstellationPanelProps) {
+  const bgStyle =
+    variant === "elevated"
+      ? "var(--bg-elevated)"
+      : variant === "hollow"
+      ? "transparent"
+      : "var(--bg-surface)";
+
   return (
-    <div
-      className={["rounded-none", noPadding ? "" : "p-5", className].join(" ")}
+    <section
+      className={[
+        "relative rounded-xl transition-colors",
+        compact ? "p-3.5 sm:p-4" : "p-5 sm:p-6",
+        className,
+      ].join(" ")}
       style={{
-        background: elevated ? "var(--bg-elevated)" : "var(--bg-surface)",
-        border: "1px solid var(--border-subtle)",
+        background: bgStyle,
+        border: "1px solid var(--border-default)",
+        boxShadow: "0 4px 20px rgba(10, 15, 44, 0.4)",
         ...style,
       }}
-      {...props}
+      {...rest}
     >
+      {(title || badge) && (
+        <header className="flex items-center justify-between gap-3 mb-4 pb-3 border-b border-[var(--border-subtle)]">
+          {title && (
+            <h2 className="text-sm font-semibold tracking-wide uppercase text-[var(--text-secondary)] font-mono">
+              {title}
+            </h2>
+          )}
+          {badge && <div className="flex-shrink-0">{badge}</div>}
+        </header>
+      )}
       {children}
-    </div>
+    </section>
   );
 }
