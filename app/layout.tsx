@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Sora, Inconsolata } from "next/font/google";
 import "./globals.css";
-import Providers from "./providers";
+import { EvmProvider } from "@/components/providers/EvmProvider";
+import { ToastProvider } from "@/components/ui/Toast";
 import PageShell from "@/components/layout/PageShell";
 import { app } from "@/lib/app-config";
 
@@ -22,6 +23,18 @@ const inconsolataFont = Inconsolata({
 export const metadata: Metadata = {
   title: `${app.name} — ${app.tagline}`,
   description: app.description,
+  openGraph: {
+    title: `${app.name} — ${app.tagline}`,
+    description: app.description,
+    type: "website",
+    url: app.url,
+  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0A0F2C",
 };
 
 export default function RootLayout({
@@ -30,11 +43,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${soraFont.variable} ${inconsolataFont.variable}`}>
+    <html
+      lang="en"
+      className={`${soraFont.variable} ${inconsolataFont.variable} h-full`}
+      style={{ ["--accent" as string]: app.accent }}
+    >
       <body className="antialiased min-h-[100dvh] flex flex-col bg-[#0A0F2C]">
-        <Providers>
-          <PageShell>{children}</PageShell>
-        </Providers>
+        <EvmProvider>
+          <ToastProvider>
+            <PageShell>{children}</PageShell>
+          </ToastProvider>
+        </EvmProvider>
       </body>
     </html>
   );

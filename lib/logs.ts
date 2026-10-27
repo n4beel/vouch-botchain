@@ -1,7 +1,7 @@
 import type { AbiEvent, Address, Log } from "viem";
 
 export interface LogClient {
-  getBlockNumber: () => Promise<bigint>;
+  getBlockNumber: (params?: any) => Promise<bigint>;
   getLogs: (params: any) => Promise<any[]>;
 }
 
