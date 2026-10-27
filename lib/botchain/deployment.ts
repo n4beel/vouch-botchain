@@ -1,5 +1,5 @@
 import type { Address } from "viem";
-import type { BotChainId } from "./chain";
+import type { BotChainId } from "./chain.ts";
 
 /**
  * Where this project's contract lives, keyed by chain ID.
@@ -56,4 +56,4 @@ export function isDeployed(chainId: BotChainId): boolean {
   return d.address !== ZERO_ADDRESS && d.deployBlock > 0n;
 }
 
-export { footerLinks, type FooterLinks } from "./chain";
+export { footerLinks, type FooterLinks } from "./chain.ts";
