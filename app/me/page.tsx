@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { type Address } from "viem";
-import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import { useAccount, useWaitForTransactionReceipt } from "wagmi";
+import { useWriteContract } from "@/lib/useChainWrite";
 import { vouchAbi } from "@/lib/botchain/abi";
 import { activeBotChain } from "@/lib/botchain/chain";
 import { getDeployment, isDeployed } from "@/lib/botchain/deployment";
