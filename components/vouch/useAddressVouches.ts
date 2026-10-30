@@ -15,7 +15,7 @@ import {
 } from "@/lib/vouch";
 
 export function useAddressVouches(targetAddress?: Address) {
-  const publicClient = usePublicClient(); // stable-hook-result
+  const publicClient = usePublicClient({ chainId: activeBotChain.id }); // stable-hook-result
   const deployment = getDeployment(activeBotChain.id);
   const deployed = isDeployed(activeBotChain.id);
 
