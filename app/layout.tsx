@@ -3,6 +3,7 @@ import { Sora, Inconsolata } from "next/font/google";
 import "./globals.css";
 import { EvmProvider } from "@/components/providers/EvmProvider";
 import { ToastProvider } from "@/components/ui/Toast";
+import WrongNetworkBar from "@/components/botchain/WrongNetworkBar";
 import PageShell from "@/components/layout/PageShell";
 import { app } from "@/lib/app-config";
 
@@ -51,6 +52,7 @@ export default function RootLayout({
       <body className="antialiased min-h-[100dvh] flex flex-col bg-[#0A0F2C]">
         <EvmProvider>
           <ToastProvider>
+            <WrongNetworkBar />
             <PageShell>{children}</PageShell>
           </ToastProvider>
         </EvmProvider>
